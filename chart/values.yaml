@@ -1,0 +1,7 @@
+registry:
+  images:
+    log: ghcr.io/krateoplatformops/auth-service:latest
+
+log:
+  level: "info"
+  host: "auth.krateo.site"
