@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log
+  name: auth
   labels:
     app: krateo.io
-    component: log
+    component: auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: log
+      component: auth
   template:
     metadata:
       labels:
-        component: log
+        component: auth
     spec:
       containers:
-        - name: log
-          image: {{ .Values.registry.images.log }}
+        - name: auth
+          image: {{ .Values.registry.images.auth }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -37,8 +37,8 @@ spec:
             - configMapRef:
                 name: krateo-uri-config
           env:
-            - name: 'LOG_LEVEL'
-              value: {{ .Values.log.level }}
+            - name: 'auth_LEVEL'
+              value: {{ .Values.auth.level }}
             - name: 'MONGODB_URI'
               valueFrom:
                 secretKeyRef:

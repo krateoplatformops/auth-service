@@ -1,7 +1,7 @@
 registry:
   images:
-    log: ghcr.io/krateoplatformops/auth-service:latest
+    auth: ghcr.io/krateoplatformops/auth-service:latest
 
-log:
+auth:
   level: "info"
   host: "auth.krateo.site"

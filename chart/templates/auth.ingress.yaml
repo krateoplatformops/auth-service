@@ -1,19 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: log-ingress
+  name: auth-ingress
   labels:
   annotations:
     kubernetes.io/ingress.class: 'kong'
 spec:
   rules:
-    - host: {{ .Values.log.host }}
+    - host: {{ .Values.auth.host }}
       http:
         paths:
           - path: /*
             pathType: Prefix
             backend:
               service:
-                name: log-svc
+                name: auth-svc
                 port:
                   number: 80
