@@ -1,6 +1,6 @@
 apiVersion: v2
-name: log-service
-description: Krateo PlatformOps Log Service
+name: auth-service
+description: Krateo PlatformOps Auth Service
 type: application
 icon: "https://github.com/krateoplatformops/community/blob/main/logos/black/icon.svg"
 
