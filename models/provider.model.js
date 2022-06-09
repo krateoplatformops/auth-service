@@ -9,7 +9,7 @@ const providerSchema = new Schema({
     type: String
   },
   config: {
-    required: true,
+    required: false,
     type: String
   },
   name: {
