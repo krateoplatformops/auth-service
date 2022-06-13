@@ -20,6 +20,11 @@ const providerSchema = new Schema({
     required: true,
     type: Boolean,
     default: true
+  },
+  type: {
+    required: true,
+    type: String,
+    default: 'oauth'
   }
 })
 
