@@ -9,7 +9,8 @@ const initGuest = async () => {
         Provider.create({
           name: 'guest',
           enabled: true,
-          strategy: 'guest'
+          strategy: 'guest',
+          type: 'oauth'
         })
         logger.info('Guest provider created')
       }
