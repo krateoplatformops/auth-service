@@ -10,7 +10,7 @@ const initGuest = async () => {
           name: 'guest',
           enabled: true,
           strategy: 'guest',
-          type: 'oauth'
+          type: 'redirect'
         })
         logger.info('Guest provider created')
       }
