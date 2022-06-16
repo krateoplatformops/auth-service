@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Provider = mongoose.model('Provider')
-const { logger } = require('../../helpers/logger.helpers')
+const { logger } = require('../helpers/logger.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
