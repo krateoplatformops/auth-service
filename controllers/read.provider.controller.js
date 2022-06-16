@@ -6,8 +6,21 @@ const Provider = mongoose.model('Provider')
 router.get('/', async (req, res, next) => {
   try {
     Provider.find(req.query)
-      .then((provider) => {
-        res.status(200).json(provider)
+      .then(async (provider) => {
+        const list = [...provider]
+
+        if (list.length === 0) {
+          const guest = await Provider.create({
+            name: 'guest',
+            enabled: true,
+            strategy: 'guest',
+            type: 'redirect'
+          })
+          logger.info('Guest provider created')
+          list.concat(guest)
+        }
+
+        res.status(200).json(list)
       })
       .catch((err) => {
         next(err)
