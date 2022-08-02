@@ -10,6 +10,10 @@ module.exports = (req, res, next) => {
     }
   })
 
+  if (req.headers['x-dev'] === 'test') {
+    skip = true
+  }
+
   if (!skip) {
     logger.info(`${req.path} - ${req.method} - ${req.ip}`)
     if (Object.keys(req.body).length > 0) {

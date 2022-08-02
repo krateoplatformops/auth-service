@@ -1,0 +1,11 @@
+# {{=<% %>=}}
+---
+apiVersion: authn.krateo.io/v1alpha1
+kind: Strategy
+metadata:
+  name: <% strategyName %>
+spec:
+  name: <% name %>
+  config: <% config %>
+  strategy: <% strategy %>
+  type: <% type %>

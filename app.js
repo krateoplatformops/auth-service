@@ -21,9 +21,11 @@ require('./models/provider.model')
 
 /* Middlewares */
 const callLoggerMiddleware = require('./middlewares/call-logger.middleware')
+const providerMiddleware = require('./middlewares/provider.middleware')
 const errorLoggerMiddleware = require('./middlewares/error-logger.middleware')
 
 app.use(callLoggerMiddleware)
+app.use(providerMiddleware)
 
 /* OpenAPI */
 const swaggerDocument = require('./openapi')
@@ -31,10 +33,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 /* Routes */
 const statusRoutes = require('./routes/status.routes')
-const providerRoutes = require('./routes/provider.routes')
+const strategyRoutes = require('./routes/strategy.routes')
+const authRoutes = require('./routes/auth.routes')
 
 app.use('/', statusRoutes)
-app.use('/provider', providerRoutes)
+app.use('/strategy', strategyRoutes)
+app.use('/auth', authRoutes)
 
 app.use(errorLoggerMiddleware)
 
