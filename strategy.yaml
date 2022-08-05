@@ -3,7 +3,7 @@
 apiVersion: authn.krateo.io/v1alpha1
 kind: Strategy
 metadata:
-  name: <% strategyName %>
+  name: authn-<% strategyName %>
 spec:
   name: <% name %>
   config: <% config %>

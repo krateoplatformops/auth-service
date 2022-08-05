@@ -5,14 +5,14 @@ const request = require('request')
 const Mustache = require('mustache')
 const yaml = require('js-yaml')
 const k8s = require('@kubernetes/client-node')
-const { logger } = require('../helpers/logger.helpers')
-const stringHelpers = require('../helpers/string.helpers')
+const { logger } = require('../../helpers/logger.helpers')
+const stringHelpers = require('../../helpers/string.helpers')
 
-router.delete('/', async (req, res, next) => {
+router.delete('/:name', async (req, res, next) => {
   try {
     const kc = new k8s.KubeConfig()
     kc.loadFromDefault()
-    const client = k8s.KubernetesObjectApi.makeApiClient(kc)
+    // const client = k8s.KubernetesObjectApi.makeApiClient(kc)
 
     const opts = {}
     kc.applyToRequest(opts)
@@ -21,7 +21,7 @@ router.delete('/', async (req, res, next) => {
         encodeURI(
           `${
             kc.getCurrentCluster().server
-          }/apis/authn.krateo.io/v1alpha1/strategies/${req.body.name}`
+          }/apis/authn.krateo.io/v1alpha1/strategies/${req.params.name}`
         ),
         opts,
         (error, response, data) => {
@@ -37,7 +37,10 @@ router.delete('/', async (req, res, next) => {
 
     logger.debug(response)
 
-    res.status(response.code || 200).json({ message: response.message })
+    if (!response.code) {
+      return res.status(200).json()
+    }
+    return res.status(response.code || 200).json({ message: response.message })
   } catch (error) {
     next(error)
   }

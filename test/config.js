@@ -1,5 +1,6 @@
 const supertest = require('supertest')
 const expect = require('chai').expect
+require('dotenv').config()
 
 const app = require('../app')
 

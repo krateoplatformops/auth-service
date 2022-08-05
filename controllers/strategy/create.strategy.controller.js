@@ -5,10 +5,10 @@ const fs = require('fs')
 const Mustache = require('mustache')
 const yaml = require('js-yaml')
 const k8s = require('@kubernetes/client-node')
-const { logger } = require('../helpers/logger.helpers')
-const stringHelpers = require('../helpers/string.helpers')
+const { logger } = require('../../helpers/logger.helpers')
+const stringHelpers = require('../../helpers/string.helpers')
 
-const responseHelpers = require('../helpers/response.helpers')
+const responseHelpers = require('../../helpers/response.helpers')
 
 router.post('/', async (req, res, next) => {
   try {
@@ -24,8 +24,9 @@ router.post('/', async (req, res, next) => {
     }
     const placeholders = {
       ...req.body,
-      config: stringHelpers.to64(req.body.config)
+      config: stringHelpers.to64(JSON.stringify(req.body.config))
     }
+
     const strategy = Mustache.render(payload, {
       ...placeholders,
       strategyName: req.body.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()
