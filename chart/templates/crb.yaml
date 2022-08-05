@@ -9,7 +9,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: crossplane-admin
+  name: cluster-admin
 subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}

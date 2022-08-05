@@ -10,6 +10,8 @@ router.get('/', async (req, res, next) => {
   try {
     const payload = await strategyHelpers.getList()
 
+    logger.debug(payload)
+
     res.status(200).json({
       strategies: payload.items.map((i) => {
         return responseHelpers.parse(i)
