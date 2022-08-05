@@ -43,10 +43,12 @@ app.use(providerMiddleware)
 const statusRoutes = require('./routes/status.routes')
 const strategyRoutes = require('./routes/strategy.routes')
 const authRoutes = require('./routes/auth.routes')
+const userRoutes = require('./routes/user.routes')
 
 app.use('/', statusRoutes)
 app.use('/strategy', strategyRoutes)
 app.use('/auth', authRoutes)
+app.use('/user', userRoutes)
 
 app.use(errorLoggerMiddleware)
 

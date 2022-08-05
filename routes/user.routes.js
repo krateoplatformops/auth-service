@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const readController = require('../controllers/read.provider.controller')
+const readController = require('../controllers/user/read.user.controller')
 
 router.use('/', readController)
 
