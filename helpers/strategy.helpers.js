@@ -31,13 +31,34 @@ const getList = async () => {
   return payload
 }
 
-const getSingleByUid = async (uid) => {
-  const payload = await getList()
-  const item = payload.items.find((i) => i.metadata.uid === uid)
-  return responseHelpers.parse(item)
+const getSingleByName = async (name) => {
+  const kc = new k8s.KubeConfig()
+  kc.loadFromDefault()
+
+  const opts = {}
+  kc.applyToRequest(opts)
+  const s = await new Promise((resolve, reject) => {
+    request(
+      encodeURI(
+        `${kc.getCurrentCluster().server}${strategyConstants.api}/${name}`
+      ),
+      opts,
+      (error, response, data) => {
+        logger.debug(JSON.stringify(response))
+        if (error) {
+          logger.error(error)
+          reject(error)
+        } else resolve(data)
+      }
+    )
+  })
+
+  const payload = yaml.load(s)
+
+  return payload
 }
 
 module.exports = {
   getList,
-  getSingleByUid
+  getSingleByName
 }

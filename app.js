@@ -3,6 +3,7 @@ const cors = require('cors')({ origin: true, credentials: true })
 const responseTime = require('response-time')
 const passport = require('passport')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 
 const { envConstants } = require('./constants')
 
@@ -23,6 +24,7 @@ app.use(
   })
 )
 app.use(passport.initialize())
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(responseTime({ suffix: false, digits: 0 }))
@@ -31,9 +33,13 @@ app.use(responseTime({ suffix: false, digits: 0 }))
 const callLoggerMiddleware = require('./middlewares/call-logger.middleware')
 const providerMiddleware = require('./middlewares/provider.middleware')
 const errorLoggerMiddleware = require('./middlewares/error-logger.middleware')
+const listMiddleware = require('./middlewares/list.middleware')
+const cookieIdentityMiddleware = require('./middlewares/cookie-identity.middleware')
 
 app.use(callLoggerMiddleware)
 app.use(providerMiddleware)
+app.use(cookieIdentityMiddleware)
+app.use(listMiddleware)
 
 /* OpenAPI */
 // const swaggerDocument = require('./openapi')

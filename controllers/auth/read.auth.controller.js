@@ -18,6 +18,7 @@ router.get('/guest', async (req, res, next) => {
       }
 
       logger.debug(user)
+      console.log(user)
 
       res.cookie(
         envConstants.COOKIE_NAME,

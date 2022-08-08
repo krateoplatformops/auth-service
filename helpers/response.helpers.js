@@ -1,8 +1,8 @@
-const parse = (data) => {
+const parse = (data, includeConfig = false) => {
   const icon = data.spec.icon || 'fa-solid fa-code'
   const color = data.spec.color || 'blue'
 
-  return {
+  const payload = {
     metadata: {
       name: data.metadata.name,
       uid: data.metadata.uid
@@ -11,6 +11,12 @@ const parse = (data) => {
     icon,
     color
   }
+
+  if (!includeConfig) {
+    delete payload.config
+  }
+
+  return payload
 }
 
 module.exports = {

@@ -6,6 +6,10 @@ const jwtHelpers = require('../../helpers/jwt.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
+    if (!res.locals.identity) {
+      return res.status(401).send()
+    }
+
     res.cookie(
       envConstants.COOKIE_NAME,
       jwtHelpers.sign(res.locals.identity),
@@ -15,6 +19,7 @@ router.get('/', async (req, res, next) => {
       ...res.locals.identity
     })
   } catch (err) {
+    console.log(err)
     next(err)
   }
 })

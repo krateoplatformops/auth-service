@@ -5,19 +5,20 @@ const GitHubStrategy = require('passport-github2').Strategy
 const MicrosoftStrategy = require('passport-microsoft').Strategy
 const LdapStrategy = require('passport-ldapauth').Strategy
 const { envConstants } = require('../constants')
-const uriHelpers = require('../helpers/uri.helpers')
+const stringHelpers = require('../helpers/string.helpers')
 const strategyHelpers = require('../helpers/strategy.helpers')
+const responseHelpers = require('../helpers/response.helpers')
 
 module.exports = async (req, res, next) => {
-  const { id, redirect } = req.query
+  const { name, redirect } = req.query
   if (
     req.path.indexOf('/auth/') > -1 &&
     req.path.indexOf('/callback') === -1 &&
     req.path.indexOf('/logout') === -1 &&
-    id
+    name
   ) {
-    if (!id) {
-      return res.status(400).json({ message: 'Missing id param' })
+    if (!name) {
+      return res.status(400).json({ message: 'Missing name param' })
     }
     if (!redirect && req.method === 'GET') {
       return res.status(400).json({ message: 'Missing redirect param' })
@@ -26,7 +27,9 @@ module.exports = async (req, res, next) => {
       global.redirect = redirect
     }
 
-    const provider = await strategyHelpers.getSingleByUid(id)
+    const provider = responseHelpers.parse(
+      await strategyHelpers.getSingleByName(name)
+    )
 
     if (!provider) {
       const err = new Error(`Unknown authentication strategy`)
@@ -39,9 +42,7 @@ module.exports = async (req, res, next) => {
     if (provider.strategy === 'guest') {
       next()
     } else {
-      const config = JSON.parse(
-        Buffer.from(provider.config, 'base64').toString('ascii')
-      )
+      const config = JSON.parse(stringHelpers.b64toAscii(provider.config))
       if (provider.type === 'oauth') {
         config.callbackURL = `/auth/${provider.strategy}/callback`
       }

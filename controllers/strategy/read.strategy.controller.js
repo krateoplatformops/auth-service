@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     logger.debug(payload)
 
     res.status(200).json({
-      strategies: payload.items.map((i) => {
+      list: payload.items.map((i) => {
         return responseHelpers.parse(i)
       })
     })
@@ -22,9 +22,11 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:uid', async (req, res, next) => {
+router.get('/:name', async (req, res, next) => {
   try {
-    res.status(200).json(await strategyHelpers.getSingleByUid(req.params.uid))
+    const payload = await strategyHelpers.getSingleByName(req.params.name)
+
+    res.status(200).json(responseHelpers.parse(payload, true))
   } catch (error) {
     next(error)
   }

@@ -1,26 +1,20 @@
 var jwt = require('jsonwebtoken')
-const { envConstants } = require('./../constants')
+const { envConstants, cookieConstants } = require('./../constants')
 
 const sign = (obj) => {
+  delete obj.expiresIn
+  delete obj.iat
+  delete obj.exp
+  delete obj.iss
+
   return jwt.sign(obj, envConstants.JWT_SECRET, {
     issuer: envConstants.JWT_ISSUER,
-    expiresIn: 60 * 1
+    expiresIn: cookieConstants.maxAge
   })
 }
 
 const verify = (token) => {
-  jwt.verify(
-    b,
-    envConstants.JWT_SECRET,
-    { issuer: envConstants.JWT_ISSUER },
-    (err, decoded) => {
-      if (err) {
-        return false
-      }
-
-      return true
-    }
-  )
+  return jwt.verify(token, envConstants.JWT_SECRET)
 }
 
 module.exports = {
