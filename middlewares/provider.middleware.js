@@ -28,7 +28,8 @@ module.exports = async (req, res, next) => {
     }
 
     const provider = responseHelpers.parse(
-      await strategyHelpers.getSingleByName(name)
+      await strategyHelpers.getSingleByName(name),
+      true
     )
 
     if (!provider) {

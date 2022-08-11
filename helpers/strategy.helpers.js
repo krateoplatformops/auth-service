@@ -4,7 +4,6 @@ const { logger } = require('../helpers/logger.helpers')
 const yaml = require('js-yaml')
 
 const strategyConstants = require('../constants/strategy.constants')
-const responseHelpers = require('./response.helpers')
 
 const getList = async () => {
   const kc = new k8s.KubeConfig()
