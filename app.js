@@ -4,8 +4,9 @@ const responseTime = require('response-time')
 const passport = require('passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+require('dotenv').config()
 
-const { envConstants } = require('./constants')
+const { envConstants } = require('./service-library/constants')
 
 passport.serializeUser((user, done) => {
   done(null, user)
@@ -30,23 +31,19 @@ app.use(express.urlencoded({ extended: false }))
 app.use(responseTime({ suffix: false, digits: 0 }))
 
 /* Middlewares */
-const callLoggerMiddleware = require('./middlewares/call-logger.middleware')
+const callLoggerMiddleware = require('./service-library/middlewares/call-logger.middleware')
+const listMiddleware = require('./service-library/middlewares/list.middleware')
+const errorLoggerMiddleware = require('./service-library/middlewares/error-logger.middleware')
+const cookieIdentityMiddleware = require('./service-library/middlewares/cookie-identity.middleware')
 const providerMiddleware = require('./middlewares/provider.middleware')
-const errorLoggerMiddleware = require('./middlewares/error-logger.middleware')
-const listMiddleware = require('./middlewares/list.middleware')
-const cookieIdentityMiddleware = require('./middlewares/cookie-identity.middleware')
 
 app.use(callLoggerMiddleware)
 app.use(providerMiddleware)
 app.use(cookieIdentityMiddleware)
 app.use(listMiddleware)
 
-/* OpenAPI */
-// const swaggerDocument = require('./openapi')
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
 /* Routes */
-const statusRoutes = require('./routes/status.routes')
+const statusRoutes = require('./service-library/routes/status.routes')
 const strategyRoutes = require('./routes/strategy.routes')
 const authRoutes = require('./routes/auth.routes')
 const userRoutes = require('./routes/user.routes')

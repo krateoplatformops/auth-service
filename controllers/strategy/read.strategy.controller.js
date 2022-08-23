@@ -1,22 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const yaml = require('js-yaml')
-
-const { logger } = require('../../helpers/logger.helpers')
+const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
+const { k8sConstants } = require('../../service-library/constants')
 const responseHelpers = require('../../helpers/response.helpers')
-const strategyHelpers = require('../../helpers/strategy.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
-    const payload = await strategyHelpers.getList()
+    const list = await k8sHelpers.getList(k8sConstants.strategyApi)
 
-    logger.debug(payload)
-
-    res.status(200).json({
-      list: payload.items.map((i) => {
-        return responseHelpers.parse(i)
-      })
-    })
+    res.status(200).json({ list: list.map((x) => responseHelpers.parse(x)) })
   } catch (error) {
     next(error)
   }
@@ -24,9 +16,12 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:name', async (req, res, next) => {
   try {
-    const payload = await strategyHelpers.getSingleByName(req.params.name)
+    const t = await k8sHelpers.getSingleByName(
+      k8sConstants.strategyApi,
+      req.params.name
+    )
 
-    res.status(200).json(responseHelpers.parse(payload, true))
+    res.status(200).json(responseHelpers.parse(t, true))
   } catch (error) {
     next(error)
   }

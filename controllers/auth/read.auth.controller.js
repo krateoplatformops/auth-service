@@ -2,10 +2,13 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 
-const { cookieConstants, envConstants } = require('../../constants')
-const jwtHelpers = require('../../helpers/jwt.helpers')
+const {
+  cookieConstants,
+  envConstants
+} = require('../../service-library/constants')
+const logger = require('../../service-library/helpers/logger.helpers')
+const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 const authHelpers = require('../../helpers/auth.helpers')
-const { logger } = require('../../helpers/logger.helpers')
 
 router.get('/guest', async (req, res, next) => {
   try {
@@ -18,7 +21,6 @@ router.get('/guest', async (req, res, next) => {
       }
 
       logger.debug(user)
-      console.log(user)
 
       res.cookie(
         envConstants.COOKIE_NAME,

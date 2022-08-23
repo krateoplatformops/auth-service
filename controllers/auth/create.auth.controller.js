@@ -2,9 +2,12 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 
-const { cookieConstants, envConstants } = require('../../constants')
-const { logger } = require('../../helpers/logger.helpers')
-const jwtHelpers = require('../../helpers/jwt.helpers')
+const {
+  cookieConstants,
+  envConstants
+} = require('../../service-library/constants')
+const logger = require('../../service-library/helpers/logger.helpers')
+const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 
 router.post(
   '/ldap',

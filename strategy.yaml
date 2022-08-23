@@ -9,3 +9,5 @@ spec:
   config: <% config %>
   strategy: <% strategy %>
   type: <% type %>
+  icon: <% icon %>
+  color: <% color %>

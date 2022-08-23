@@ -1,13 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const fs = require('fs')
-
 const Mustache = require('mustache')
-const yaml = require('js-yaml')
 const k8s = require('@kubernetes/client-node')
-const { logger } = require('../../helpers/logger.helpers')
-const stringHelpers = require('../../helpers/string.helpers')
 
+const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
+const logger = require('../../service-library/helpers/logger.helpers')
+const stringHelpers = require('../../service-library/helpers/string.helpers')
 const responseHelpers = require('../../helpers/response.helpers')
 
 router.post('/', async (req, res, next) => {
@@ -34,16 +33,9 @@ router.post('/', async (req, res, next) => {
 
     logger.debug(strategy)
 
-    await client
-      .create(yaml.load(strategy))
-      .then((response) => {
-        logger.info('Created strategy')
+    const doc = await k8sHelpers.create(client, strategy)
 
-        res.status(200).json(responseHelpers.parse(response.body))
-      })
-      .catch((e) => {
-        next(e)
-      })
+    res.status(200).json(responseHelpers.parse(doc))
   } catch (error) {
     next(error)
   }

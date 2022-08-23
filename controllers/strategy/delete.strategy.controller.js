@@ -1,46 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const request = require('request')
-
-const Mustache = require('mustache')
-const yaml = require('js-yaml')
-const k8s = require('@kubernetes/client-node')
-const { logger } = require('../../helpers/logger.helpers')
-const stringHelpers = require('../../helpers/string.helpers')
+const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
+const { k8sConstants } = require('../../service-library/constants')
 
 router.delete('/:name', async (req, res, next) => {
   try {
-    const kc = new k8s.KubeConfig()
-    kc.loadFromDefault()
-    // const client = k8s.KubernetesObjectApi.makeApiClient(kc)
+    await k8sHelpers.deleteByName(k8sConstants.strategyApi, req.params.name)
 
-    const opts = {}
-    kc.applyToRequest(opts)
-    const s = await new Promise((resolve, reject) => {
-      request.delete(
-        encodeURI(
-          `${
-            kc.getCurrentCluster().server
-          }/apis/authn.krateo.io/v1alpha1/strategies/${req.params.name}`
-        ),
-        opts,
-        (error, response, data) => {
-          logger.debug(JSON.stringify(response))
-          if (error) {
-            logger.error(error)
-            reject(error)
-          } else resolve(data)
-        }
-      )
-    })
-    const response = yaml.load(s)
-
-    logger.debug(response)
-
-    if (!response.code) {
-      return res.status(200).json()
-    }
-    return res.status(response.code || 200).json({ message: response.message })
+    res
+      .status(200)
+      .json({ message: `Strategy with name ${req.params.name} deleted` })
   } catch (error) {
     next(error)
   }

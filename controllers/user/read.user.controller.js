@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-const { cookieConstants, envConstants } = require('../../constants')
-const jwtHelpers = require('../../helpers/jwt.helpers')
+const {
+  cookieConstants,
+  envConstants
+} = require('../../service-library/constants')
+const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -19,7 +22,6 @@ router.get('/', async (req, res, next) => {
       ...res.locals.identity
     })
   } catch (err) {
-    console.log(err)
     next(err)
   }
 })

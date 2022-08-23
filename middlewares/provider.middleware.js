@@ -1,13 +1,13 @@
-const axios = require('axios')
 const passport = require('passport')
-const { logger } = require('../helpers/logger.helpers')
 const GitHubStrategy = require('passport-github2').Strategy
 const MicrosoftStrategy = require('passport-microsoft').Strategy
 const LdapStrategy = require('passport-ldapauth').Strategy
-const { envConstants } = require('../constants')
-const stringHelpers = require('../helpers/string.helpers')
-const strategyHelpers = require('../helpers/strategy.helpers')
+
+const logger = require('../service-library/helpers/logger.helpers')
+const stringHelpers = require('../service-library/helpers/string.helpers')
+const k8sHelpers = require('../service-library/helpers/k8s.helpers')
 const responseHelpers = require('../helpers/response.helpers')
+const { k8sConstants } = require('../service-library/constants')
 
 module.exports = async (req, res, next) => {
   const { name, redirect } = req.query
@@ -28,7 +28,7 @@ module.exports = async (req, res, next) => {
     }
 
     const provider = responseHelpers.parse(
-      await strategyHelpers.getSingleByName(name),
+      await k8sHelpers.getSingleByName(k8sConstants.strategyApi, name),
       true
     )
 

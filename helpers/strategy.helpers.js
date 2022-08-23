@@ -1,6 +1,6 @@
 const k8s = require('@kubernetes/client-node')
 const request = require('request')
-const { logger } = require('../helpers/logger.helpers')
+const logger = require('../helpers/logger.helpers')
 const yaml = require('js-yaml')
 
 const strategyConstants = require('../constants/strategy.constants')
