@@ -12,7 +12,7 @@ const authHelpers = require('../../helpers/auth.helpers')
 
 router.get('/guest', async (req, res, next) => {
   try {
-    if (res.locals.provider.strategy === 'guest') {
+    if (res.locals.provider.spec.strategy === 'guest') {
       const user = {
         id: 'guest',
         username: 'guest',

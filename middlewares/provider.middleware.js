@@ -40,21 +40,21 @@ module.exports = async (req, res, next) => {
     }
 
     res.locals.provider = provider
-    if (provider.strategy === 'guest') {
+    if (provider.spec.strategy === 'guest') {
       next()
     } else {
-      const config = JSON.parse(stringHelpers.b64toAscii(provider.config))
-      if (provider.type === 'oauth') {
+      const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))
+      if (provider.spec.type === 'oauth') {
         config.callbackURL = `/auth/${provider.strategy}/callback`
       }
       logger.debug(
-        `${provider.strategy} strategy config: ${JSON.stringify(
+        `${provider.spec.strategy} strategy config: ${JSON.stringify(
           config,
           null,
           2
         )}`
       )
-      switch (provider.strategy) {
+      switch (provider.spec.strategy) {
         case 'github':
           passport.use(
             new GitHubStrategy(
@@ -90,7 +90,7 @@ module.exports = async (req, res, next) => {
           }
           break
         default:
-          logger.error(`${provider.strategy} strategy not supported`)
+          logger.error(`${provider.sepc.strategy} strategy not supported`)
       }
       next()
     }
