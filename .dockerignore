@@ -3,4 +3,10 @@
 .git
 *.md
 .gitignore
+mongo.txt
+nodemon.json
 .dccache
+test.json
+empty-db.js
+test.js
+nodemon.json

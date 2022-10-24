@@ -85,7 +85,6 @@ router.get('/logout', async (req, res, next) => {
     res.status(200).send()
   } catch (error) {
     next(error)
-    return
   }
 })
 

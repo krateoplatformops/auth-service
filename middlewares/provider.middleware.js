@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
     )
 
     if (!provider) {
-      const err = new Error(`Unknown authentication strategy`)
+      const err = new Error('Unknown authentication strategy')
       err.statusCode = 500
       next(err)
       return
@@ -72,9 +72,7 @@ module.exports = async (req, res, next) => {
             new MicrosoftStrategy(
               config,
               (accessToken, refreshToken, profile, done) => {
-                User.findOrCreate({ userId: profile.id }, function (err, user) {
-                  return done(err, user)
-                })
+                // Create user?
               }
             )
           )
@@ -84,7 +82,7 @@ module.exports = async (req, res, next) => {
           break
         case 'basic':
           if (JSON.stringify(config) !== JSON.stringify(req.body)) {
-            const err = new Error(`Username or password is incorrect`)
+            const err = new Error('Username or password is incorrect')
             err.statusCode = 500
             next(err)
           }
