@@ -5,6 +5,8 @@ const passport = require('passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
+const k8sHelpers = require('./service-library/helpers/k8s.helpers')
+k8sHelpers.init()
 
 const { envConstants } = require('./service-library/constants')
 
