@@ -8,6 +8,7 @@ const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
 const logger = require('../../service-library/helpers/logger.helpers')
 const stringHelpers = require('../../service-library/helpers/string.helpers')
 const responseHelpers = require('../../helpers/response.helpers')
+const yaml = require('js-yaml')
 
 router.post('/', async (req, res, next) => {
   try {
@@ -26,11 +27,14 @@ router.post('/', async (req, res, next) => {
       config: stringHelpers.to64(JSON.stringify(req.body.config))
     }
 
-    const strategy = Mustache.render(payload, {
-      ...placeholders,
-      strategyName: req.body.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()
-    })
+    const strategy = yaml.load(
+      Mustache.render(payload, {
+        ...placeholders,
+        strategyName: req.body.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()
+      })
+    )
 
+    console.log(strategy)
     logger.debug(strategy)
 
     const doc = await k8sHelpers.create(client, strategy)
