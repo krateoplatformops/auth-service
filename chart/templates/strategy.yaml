@@ -1,0 +1,11 @@
+apiVersion: authn.krateo.io/v1alpha1
+kind: Strategy
+metadata:
+  name: authn-<% strategyName %>
+spec:
+  name: guest
+  config: {}
+  strategy: guest
+  type: redirect
+  icon: fa-solid fa-lock
+  color: blue
