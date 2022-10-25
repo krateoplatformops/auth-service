@@ -34,7 +34,6 @@ router.post('/', async (req, res, next) => {
       })
     )
 
-    console.log(strategy)
     logger.debug(strategy)
 
     const doc = await k8sHelpers.create(client, strategy)
