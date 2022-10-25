@@ -1,7 +1,9 @@
+# {{=<% %>=}}
+---
 apiVersion: authn.krateo.io/v1alpha1
 kind: Strategy
 metadata:
-  name: authn-guest
+  name: authn-<% strategyName %>
   annotations: {}
 spec:
   name: <% name %>
