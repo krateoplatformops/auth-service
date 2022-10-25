@@ -4,7 +4,7 @@ metadata:
   name: authn-<% strategyName %>
 spec:
   name: guest
-  config: {}
+  config: ""
   strategy: guest
   type: redirect
   icon: fa-solid fa-lock
