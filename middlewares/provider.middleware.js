@@ -27,10 +27,22 @@ module.exports = async (req, res, next) => {
       global.redirect = redirect
     }
 
-    const provider = responseHelpers.parse(
-      await k8sHelpers.getSingleByName(k8sConstants.strategyApi, name),
-      true
-    )
+    let strategy = null
+    try {
+      strategy = await k8sHelpers.getSingleByName(
+        k8sConstants.strategyApi,
+        name
+      )
+    } catch {}
+
+    if (!strategy) {
+      const err = new Error('Cannot find strategy')
+      err.statusCode = 500
+      next(err)
+      return
+    }
+
+    const provider = responseHelpers.parse(strategy, true)
 
     if (!provider) {
       const err = new Error('Unknown authentication strategy')
@@ -41,6 +53,7 @@ module.exports = async (req, res, next) => {
 
     res.locals.provider = provider
     if (provider.spec.strategy === 'guest') {
+      console.log(provider.spec.strategy)
       next()
     } else {
       const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))

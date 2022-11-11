@@ -12,26 +12,23 @@ const authHelpers = require('../../helpers/auth.helpers')
 
 router.get('/guest', async (req, res, next) => {
   try {
-    if (res.locals.provider.spec.strategy === 'guest') {
-      const user = {
-        id: 'guest',
-        username: 'guest',
-        provider: 'guest',
-        email: 'guest@krateo.io'
-      }
-
-      logger.debug(user)
-
-      res.cookie(
-        envConstants.COOKIE_NAME,
-        jwtHelpers.sign(user),
-        cookieConstants
-      )
-      res.redirect(global.redirect)
-      res.status(200)
-    } else {
-      res.status(401).send()
+    // if (res.locals.provider.spec.strategy === 'guest') {
+    const user = {
+      id: 'guest',
+      username: 'guest',
+      provider: 'guest',
+      email: 'guest@krateo.io',
+      displayName: 'guest'
     }
+
+    logger.debug(user)
+
+    res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
+    res.redirect(global.redirect)
+    res.status(200)
+    // } else {
+    //   res.status(401).send()
+    // }
   } catch (err) {
     next(err)
   }
