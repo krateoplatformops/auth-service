@@ -91,6 +91,11 @@ module.exports = async (req, res, next) => {
           )
           break
         case 'ldap':
+          if (!config.server) {
+            config.server = {
+              ...config
+            }
+          }
           passport.use(new LdapStrategy(config))
           break
         case 'basic':

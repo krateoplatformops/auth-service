@@ -13,6 +13,7 @@ router.post(
   '/ldap',
   passport.authenticate('ldapauth', { session: false }),
   (req, res) => {
+    logger.debug(res.req)
     const user = {
       id: res.req.user.uid,
       displayName: res.req.user.displayName,
@@ -25,6 +26,13 @@ router.post(
         ? res.req.user.mail[0]
         : res.req.user.mail
     } catch {}
+
+    if (!user.id || user.id === '') {
+      user.id = res.req.user.sAMAccountName
+    }
+    if (!user.username || user.username === '') {
+      user.username = res.req.user.sAMAccountName
+    }
 
     logger.info(user)
 
