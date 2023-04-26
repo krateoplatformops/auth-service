@@ -10,7 +10,9 @@ const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 router.get('/', async (req, res, next) => {
   try {
     if (!res.locals.identity) {
-      return res.status(401).send()
+      res.clearCookie(envConstants.COOKIE_NAME, { ...cookieConstants })
+      res.status(401).send()
+      return
     }
 
     res.cookie(
