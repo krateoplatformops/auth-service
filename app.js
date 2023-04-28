@@ -10,6 +10,10 @@ k8sHelpers.init()
 
 const { envConstants } = require('./service-library/constants')
 
+/* Init Strategy */
+const init = require('./init/init')
+init.defaultStrategy()
+
 passport.serializeUser((user, done) => {
   done(null, user)
 })

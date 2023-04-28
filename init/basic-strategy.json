@@ -1,0 +1,15 @@
+{
+  "apiVersion": "authn.krateo.io/v1alpha1",
+  "kind": "Strategy",
+  "metadata": {
+    "name": "basic-strategy"
+  },
+  "spec": {
+    "color": "blue",
+    "config": "",
+    "icon": "fa-solid fa-lock",
+    "name": "basic-strategy",
+    "strategy": "basic",
+    "type": "form"
+  }
+}
