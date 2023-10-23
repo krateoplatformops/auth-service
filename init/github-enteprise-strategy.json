@@ -1,0 +1,15 @@
+{
+  "apiVersion": "authn.krateo.io/v1alpha1",
+  "kind": "Strategy",
+  "metadata": {
+    "name": "github-enterprise-strategy"
+  },
+  "spec": {
+    "color": "blue",
+    "config": "ewogICJjbGllbnRJRCI6ICI1YzkyOTc5NjI5MGY0MjYxMzVjYiIsCiAgImNsaWVudFNlY3JldCI6ICI4MTVmZDVlZDMwOWI2YWU5Y2U1NDlhYmZkNzg4Y2I1ZGZiM2RjMGZjIiwKICAiYXV0aG9yaXphdGlvblVSTCI6ICJodHRwczovL2dpdGh1Yi5pbnNpZWwuaXQvbG9naW4vb2F1dGgvYXV0aG9yaXplIiwKICAidG9rZW5VUkwiOiAiaHR0cHM6Ly9naXRodWIuaW5zaWVsLml0L2xvZ2luL29hdXRoL2FjY2Vzc190b2tlbiIsCiAgInVzZXJQcm9maWxlVVJMIjogImh0dHBzOi8vZ2l0aHViLmluc2llbC5pdC9hcGkvdjMvdXNlciIsCiAgImNhbGxiYWNrVVJMIjogImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC9hcGkvYXV0aC9naXRodWIvIiwKICAic2NvcGUiOiAicmVhZDpvcmcscmVhZDp1c2VyIiwKICAic3RhdGUiOiAiYXV0aGVuIgp9Cg==",
+    "icon": "fa-solid fa-lock",
+    "name": "github-enterprise-strategy",
+    "strategy": "basic",
+    "type": "form"
+  }
+}

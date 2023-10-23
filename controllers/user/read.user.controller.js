@@ -1,4 +1,5 @@
 const express = require('express')
+const logger = require('../../service-library/helpers/logger.helpers')
 const router = express.Router()
 
 const {
@@ -9,6 +10,8 @@ const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
+    logger.debug(res)
+
     if (!res.locals.identity) {
       res.clearCookie(envConstants.COOKIE_NAME, { ...cookieConstants })
       res.status(401).send()

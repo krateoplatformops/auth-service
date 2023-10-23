@@ -1,0 +1,10 @@
+{
+  "clientID": "5c929796290f426135cb",
+  "clientSecret": "2043cda11a3330f050bbcec7eb0edf1187e520e6",
+  "authorizationURL": "https://github.insiel.it/login/oauth/authorize",
+  "tokenURL": "https://github.insiel.it/login/oauth/access_token",
+  "userProfileURL": "https://github.insiel.it/api/v3/user",
+  "callbackURL": "http://localhost:5000/api/auth/github/",
+  "scope": "read:org,read:user",
+  "state": "authen"
+}
