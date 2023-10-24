@@ -44,6 +44,7 @@ router.get(
 )
 
 router.get('/github/callback', async (req, res, next) => {
+  logger.debug('1')
   let strategy = null
   try {
     strategy = await k8sHelpers.getSingleByName(
@@ -54,6 +55,9 @@ router.get('/github/callback', async (req, res, next) => {
     next(error)
   }
 
+  logger.debug('2')
+  logger.debug(strategy)
+
   if (!strategy) {
     const err = new Error('Cannot find strategy')
     err.statusCode = 500
@@ -62,6 +66,9 @@ router.get('/github/callback', async (req, res, next) => {
   }
 
   const provider = responseHelpers.parse(strategy, true)
+
+  logger.debug('3')
+  logger.debug(provider)
 
   if (!provider) {
     const err = new Error('Unknown authentication strategy')
@@ -72,6 +79,8 @@ router.get('/github/callback', async (req, res, next) => {
 
   const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))
 
+  logger.debug('4')
+  logger.debug(config)
   logger.debug(req)
   const grantCode = req.query.code
 
@@ -80,6 +89,8 @@ router.get('/github/callback', async (req, res, next) => {
   const clientId = config.clientID
   const clientSecret = config.clientSecret
   const userInfo = {}
+
+  logger.debug('----> new UserInfo')
 
   fetch(
     tokenURL +
@@ -98,8 +109,10 @@ router.get('/github/callback', async (req, res, next) => {
   )
     .then((res) => res.json())
     .then((json) => {
+      logger.debug('5')
       logger.debug(json)
       req.session.github_token = json.access_token
+      logger.debug('6')
       logger.debug(req.session.github_token)
     })
     .catch((err) => console.log(err))
@@ -113,6 +126,7 @@ router.get('/github/callback', async (req, res, next) => {
       })
         .then((res) => res.json())
         .then((json) => {
+          logger.debug('7')
           userInfo.id = json.id
           userInfo.displayName = json.name
           userInfo.username = json.login
@@ -121,9 +135,11 @@ router.get('/github/callback', async (req, res, next) => {
         .catch((err) => console.log(err))
     })
 
+  logger.debug('8')
   logger.debug(JSON.stringify(userInfo))
   const user = authHelpers.cookie(userInfo, 'github')
 
+  logger.debug('9')
   logger.debug(user)
 
   res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
