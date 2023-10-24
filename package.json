@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:8080",
   "name": "auth-service",
   "version": "VERSION",
   "description": "Krateo Auth Service",

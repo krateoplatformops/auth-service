@@ -8,3 +8,4 @@ assets/*
 sample.json
 .env
 .test/
+.vscode/launch.json

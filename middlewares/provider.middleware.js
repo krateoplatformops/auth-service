@@ -74,6 +74,11 @@ module.exports = async (req, res, next) => {
               config,
               (accessToken, refreshToken, profile, done) => {
                 process.nextTick(() => {
+                  logger.debug('Access token from GitHub:' + accessToken)
+                  logger.debug(
+                    'Profile info from GitHub: ' + JSON.stringify(profile)
+                  )
+
                   return done(null, profile)
                 })
               }

@@ -36,7 +36,7 @@ router.get('/guest', async (req, res, next) => {
 
 router.get(
   '/github',
-  passport.authenticate('github', { scope: ['user:email'] })
+  passport.authenticate('github', { scope: ['read:user', 'read:org'] })
 )
 
 router.get(
@@ -45,13 +45,15 @@ router.get(
     failureRedirect: '/login',
     failureMessage: true
   }),
-  (req, res) => {
+  async function (req, res, next) {
+    console.debug('User info from GitHub: ' + JSON.stringify(req.user))
     const user = authHelpers.cookie(req.user, 'github')
 
-    logger.debug(user)
+    logger.debug('User info ready for cookie:' + user)
+    res.cookie(process.env.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
 
-    res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
     res.redirect(global.redirect)
+    res.status(200)
   }
 )
 
