@@ -10,8 +10,8 @@ const logger = require('../../service-library/helpers/logger.helpers')
 const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 const authHelpers = require('../../helpers/auth.helpers')
 const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
-const responseHelpers = require('../helpers/response.helpers')
-const { k8sConstants } = require('../service-library/constants')
+const responseHelpers = require('../../helpers/response.helpers')
+const { k8sConstants } = require('../../service-library/constants')
 
 router.get('/guest', async (req, res, next) => {
   try {
