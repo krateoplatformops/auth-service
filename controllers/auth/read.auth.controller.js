@@ -92,6 +92,8 @@ router.get('/github/callback', async (req, res, next) => {
 
   logger.debug('----> new UserInfo')
 
+  let accessToken = null
+
   fetch(
     tokenURL +
       '?client_id=' +
@@ -107,13 +109,10 @@ router.get('/github/callback', async (req, res, next) => {
       }
     }
   )
-    .then((res) => res.json())
-    .then((json) => {
+    .then((respToken) => respToken.json())
+    .then((jsonToken) => {
       logger.debug('5')
-      logger.debug(json)
-      req.session.github_token = json.access_token
-      logger.debug('6')
-      logger.debug(req.session.github_token)
+      accessToken = jsonToken.access_token
     })
     .catch((err) => console.log(err))
     .then(() => {
@@ -121,12 +120,12 @@ router.get('/github/callback', async (req, res, next) => {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          Authorization: 'Bearer ' + req.session.github_token
+          Authorization: 'Bearer ' + accessToken
         }
       })
-        .then((res) => res.json())
+        .then((respUser) => respUser.json())
         .then((json) => {
-          logger.debug('7')
+          logger.debug(clientSecret)
           userInfo.id = json.id
           userInfo.displayName = json.name
           userInfo.username = json.login
