@@ -10,6 +10,7 @@ const logger = require('../../service-library/helpers/logger.helpers')
 const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 const authHelpers = require('../../helpers/auth.helpers')
 const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
+const stringHelpers = require('../../service-library/helpers/string.helpers')
 const responseHelpers = require('../../helpers/response.helpers')
 const { k8sConstants } = require('../../service-library/constants')
 
@@ -42,11 +43,16 @@ router.get(
   passport.authenticate('github', { scope: ['user:email'] })
 )
 
-router.get('/github/callback', (req, res, next) => {
+router.get('/github/callback', async (req, res, next) => {
   let strategy = null
   try {
-    strategy = k8sHelpers.getSingleByName(k8sConstants.strategyApi, 'github')
-  } catch {}
+    strategy = await k8sHelpers.getSingleByName(
+      k8sConstants.strategyApi,
+      'github'
+    )
+  } catch (error) {
+    next(error)
+  }
 
   if (!strategy) {
     const err = new Error('Cannot find strategy')
@@ -64,13 +70,15 @@ router.get('/github/callback', (req, res, next) => {
     return
   }
 
+  const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))
+
   logger.debug(req)
   const grantCode = req.query.code
 
-  const tokenURL = provider.spec.config.tokenURL
-  const userProfileURL = provider.spec.config.userProfileURL
-  const clientId = provider.spec.config.clientID
-  const clientSecret = provider.spec.config.clientSecret
+  const tokenURL = config.tokenURL
+  const userProfileURL = config.userProfileURL
+  const clientId = config.clientID
+  const clientSecret = config.clientSecret
   const userInfo = {}
 
   fetch(
