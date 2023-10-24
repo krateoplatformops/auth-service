@@ -131,20 +131,24 @@ router.get('/github/callback', async (req, res, next) => {
           userInfo.displayName = json.name
           userInfo.username = json.login
           userInfo.email = json.email
+
+          logger.info('8')
+          logger.info(JSON.stringify(userInfo))
+          const user = authHelpers.cookie(userInfo, 'github')
+
+          logger.info('9')
+          logger.info(user)
+
+          res.cookie(
+            envConstants.COOKIE_NAME,
+            jwtHelpers.sign(user),
+            cookieConstants
+          )
+          res.redirect(global.redirect)
+          res.status(200)
         })
         .catch((err) => console.log(err))
     })
-
-  logger.info('8')
-  logger.info(JSON.stringify(userInfo))
-  const user = authHelpers.cookie(userInfo, 'github')
-
-  logger.info('9')
-  logger.info(user)
-
-  res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
-  res.redirect(global.redirect)
-  res.status(200)
 })
 
 router.get(
