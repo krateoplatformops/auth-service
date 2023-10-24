@@ -10,6 +10,7 @@ const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 
 router.get('/', async (req, res, next) => {
   try {
+    logger.debug(res)
     logger.debug(JSON.stringify(res))
 
     if (!res.locals.identity) {
