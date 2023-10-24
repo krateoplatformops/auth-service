@@ -140,15 +140,16 @@ router.get('/github/callback', (req, res, next) => {
   userInfo.username = 'userlb'
   userInfo.email = 'myemail'
 
-  logger.debug('8')
-  logger.debug(JSON.stringify(userInfo))
+  logger.info('8')
+  logger.info(JSON.stringify(userInfo))
   const user = authHelpers.cookie(userInfo, 'github')
 
-  logger.debug('9')
-  logger.debug(user)
+  logger.info('9')
+  logger.info(user)
 
   res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
   res.redirect(global.redirect)
+  res.status(200)
 })
 
 router.get(
