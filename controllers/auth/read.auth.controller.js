@@ -40,118 +40,138 @@ router.get('/guest', async (req, res, next) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['read:user'] }))
 
-router.get(
-  '/github/callback',
-  logger.debug('1')
-  // passport.authenticate('github', { failureRedirect: '/' }),
-  // async function (req, res, next) {
-  //   // Successful authentication, redirect home.
-  //   logger.debug('1')
-  //   let strategy = null
-  //   try {
-  //     strategy = await k8sHelpers.getSingleByName(
-  //       k8sConstants.strategyApi,
-  //       'github'
-  //     )
-  //   } catch (error) {
-  //     next(error)
-  //   }
+router.get('/github/callback', async (req, res, next) => {
+  try {
+    // if (res.locals.provider.spec.strategy === 'guest') {
+    const user = {
+      id: 'guestgithub',
+      username: 'guestgithub',
+      provider: 'guestgithub',
+      email: 'guestgithub@krateo.io',
+      displayName: 'guestgithub'
+    }
 
-  //   logger.debug('2')
-  //   logger.debug(strategy)
+    logger.debug(user)
 
-  //   if (!strategy) {
-  //     const err = new Error('Cannot find strategy')
-  //     err.statusCode = 500
-  //     next(err)
-  //     return
-  //   }
+    res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
+    res.redirect(global.redirect)
+    res.status(200)
+  } catch (err) {
+    next(err)
+  }
+})
 
-  //   const provider = responseHelpers.parse(strategy, true)
+// router.get(
+//   '/github/callback',
+//   passport.authenticate('github', { failureRedirect: '/' }),
+//   async function (req, res, next) {
+//     // Successful authentication, redirect home.
+//     logger.debug('1')
+//     let strategy = null
+//     try {
+//       strategy = await k8sHelpers.getSingleByName(
+//         k8sConstants.strategyApi,
+//         'github'
+//       )
+//     } catch (error) {
+//       next(error)
+//     }
 
-  //   logger.debug('3')
-  //   logger.debug(provider)
+//     logger.debug('2')
+//     logger.debug(strategy)
 
-  //   if (!provider) {
-  //     const err = new Error('Unknown authentication strategy')
-  //     err.statusCode = 500
-  //     next(err)
-  //     return
-  //   }
+//     if (!strategy) {
+//       const err = new Error('Cannot find strategy')
+//       err.statusCode = 500
+//       next(err)
+//       return
+//     }
 
-  //   const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))
+//     const provider = responseHelpers.parse(strategy, true)
 
-  //   logger.debug('4')
-  //   logger.debug(config)
-  //   logger.debug(req)
-  //   const grantCode = req.query.code
+//     logger.debug('3')
+//     logger.debug(provider)
 
-  //   const tokenURL = config.tokenURL
-  //   const userProfileURL = config.userProfileURL
-  //   const clientId = config.clientID
-  //   const clientSecret = config.clientSecret
-  //   const userInfo = {}
+//     if (!provider) {
+//       const err = new Error('Unknown authentication strategy')
+//       err.statusCode = 500
+//       next(err)
+//       return
+//     }
 
-  //   logger.debug('----> new UserInfo')
+//     const config = JSON.parse(stringHelpers.b64toAscii(provider.spec.config))
 
-  //   let accessToken = null
+//     logger.debug('4')
+//     logger.debug(config)
+//     logger.debug(req)
+//     const grantCode = req.query.code
 
-  //   fetch(
-  //     tokenURL +
-  //       '?client_id=' +
-  //       clientId +
-  //       '&client_secret=' +
-  //       clientSecret +
-  //       '&code=' +
-  //       grantCode,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json'
-  //       }
-  //     }
-  //   )
-  //     .then((respToken) => respToken.json())
-  //     .then((jsonToken) => {
-  //       logger.debug('5')
-  //       accessToken = jsonToken.access_token
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .then(() => {
-  //       fetch(userProfileURL, {
-  //         method: 'GET',
-  //         headers: {
-  //           Accept: 'application/json',
-  //           Authorization: 'Bearer ' + accessToken
-  //         }
-  //       })
-  //         .then((respUser) => respUser.json())
-  //         .then((json) => {
-  //           logger.debug(clientSecret)
-  //           userInfo.id = json.id
-  //           userInfo.displayName = json.name
-  //           userInfo.username = json.login
-  //           userInfo.email = json.email
+//     const tokenURL = config.tokenURL
+//     const userProfileURL = config.userProfileURL
+//     const clientId = config.clientID
+//     const clientSecret = config.clientSecret
+//     const userInfo = {}
 
-  //           logger.info('8')
-  //           logger.info(JSON.stringify(userInfo))
-  //           const user = authHelpers.cookie(userInfo, 'github')
+//     logger.debug('----> new UserInfo')
 
-  //           logger.info('9')
-  //           logger.info(user)
+//     let accessToken = null
 
-  //           res.cookie(
-  //             envConstants.COOKIE_NAME,
-  //             jwtHelpers.sign(user),
-  //             cookieConstants
-  //           )
-  //           res.redirect(global.redirect)
-  //           res.status(200)
-  //         })
-  //         .catch((err) => console.log(err))
-  //     })
-  // }
-)
+//     fetch(
+//       tokenURL +
+//         '?client_id=' +
+//         clientId +
+//         '&client_secret=' +
+//         clientSecret +
+//         '&code=' +
+//         grantCode,
+//       {
+//         method: 'POST',
+//         headers: {
+//           Accept: 'application/json'
+//         }
+//       }
+//     )
+//       .then((respToken) => respToken.json())
+//       .then((jsonToken) => {
+//         logger.debug('5')
+//         accessToken = jsonToken.access_token
+//       })
+//       .catch((err) => console.log(err))
+//       .then(() => {
+//         fetch(userProfileURL, {
+//           method: 'GET',
+//           headers: {
+//             Accept: 'application/json',
+//             Authorization: 'Bearer ' + accessToken
+//           }
+//         })
+//           .then((respUser) => respUser.json())
+//           .then((json) => {
+//             logger.debug(clientSecret)
+//             userInfo.id = json.id
+//             userInfo.displayName = json.name
+//             userInfo.username = json.login
+//             userInfo.email = json.email
+
+//             logger.info('8')
+//             logger.info(JSON.stringify(userInfo))
+//             const user = authHelpers.cookie(userInfo, 'github')
+
+//             logger.info('9')
+//             logger.info(user)
+
+//             res.cookie(
+//               envConstants.COOKIE_NAME,
+//               jwtHelpers.sign(user),
+//               cookieConstants
+//             )
+//             res.redirect(global.redirect)
+//             res.status(200)
+//           })
+//           .catch((err) => console.log(err))
+//       })
+//   }
+// )
 
 router.get(
   '/microsoft',
