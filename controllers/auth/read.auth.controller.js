@@ -38,7 +38,10 @@ router.get('/guest', async (req, res, next) => {
   }
 })
 
-router.get('/github', passport.authenticate('github', { scope: ['read:user'] }))
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['read:user', 'read:org'] })
+)
 
 // router.get('/github/callback', async (req, res, next) => {
 //   logger.debug('inside callback')
