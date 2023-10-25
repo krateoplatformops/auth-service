@@ -72,6 +72,10 @@ router.get(
     failureMessage: true
   }),
   async function (req, res, next) {
+    console.debug(req)
+    console.debug(JSON.stringify.req)
+    console.debug(res)
+    console.debug(JSON.stringify.res)
     res.redirect(global.redirect)
     res.status(200)
   }
