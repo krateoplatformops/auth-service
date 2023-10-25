@@ -49,7 +49,7 @@ router.get(
     console.debug('User info from GitHub: ' + JSON.stringify(req.user))
     const user = authHelpers.cookie(req.user, 'github')
 
-    logger.debug('User info ready for cookie:' + user)
+    logger.debug('User info ready for cookie:' + JSON.stringify(user))
     res.cookie(process.env.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
 
     res.redirect(global.redirect)
