@@ -118,7 +118,15 @@ router.get(
     const userInfo = {}
 
     logger.debug('----> new UserInfo')
-
+    logger.debug(
+      tokenURL +
+        '?client_id=' +
+        clientId +
+        '&client_secret=' +
+        clientSecret +
+        '&code=' +
+        grantCode
+    )
     let accessToken = null
 
     fetch(
