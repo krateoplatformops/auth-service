@@ -10,6 +10,12 @@ const responseHelpers = require('../helpers/response.helpers')
 const { k8sConstants } = require('../service-library/constants')
 
 module.exports = async (req, res, next) => {
+  logger.debug('req')
+  logger.debug(req)
+  logger.debug('res')
+  logger.debug(res)
+  logger.debug('next')
+  logger.debug(next)
   const { name, redirect } = req.query
   if (
     req.path.indexOf('/auth/') > -1 &&
