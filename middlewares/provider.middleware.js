@@ -74,6 +74,9 @@ module.exports = async (req, res, next) => {
               config,
               (accessToken, refreshToken, profile, done) => {
                 process.nextTick(() => {
+                  logger.debug('native callback')
+                  logger.debug(accessToken)
+                  logger.debug(profile)
                   return done(null, profile)
                 })
               }
