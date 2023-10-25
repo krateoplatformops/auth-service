@@ -134,8 +134,11 @@ router.get(
     )
       .then((respToken) => respToken.json())
       .then((jsonToken) => {
+        logger.json('user json print')
+        logger.debug(jsonToken)
         logger.debug('5')
         accessToken = jsonToken.access_token
+        logger.debug(accessToken)
       })
       .catch((err) => console.log(err))
       .then(() => {
@@ -148,6 +151,8 @@ router.get(
         })
           .then((respUser) => respUser.json())
           .then((json) => {
+            logger.json('user json print')
+            logger.debug(json)
             logger.debug(clientSecret)
             userInfo.id = json.id
             userInfo.displayName = json.name
