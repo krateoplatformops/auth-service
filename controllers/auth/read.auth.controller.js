@@ -76,6 +76,13 @@ router.get(
     console.debug(JSON.stringify.req)
     console.debug(res)
     console.debug(JSON.stringify.res)
+
+    const user = authHelpers.cookie(req.user, 'microsoft')
+
+    logger.debug(user)
+
+    res.cookie(process.env.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
+
     res.redirect(global.redirect)
     res.status(200)
   }
