@@ -77,7 +77,7 @@ router.get(
     console.debug(res)
     console.debug(JSON.stringify.res)
 
-    const user = authHelpers.cookie(req.user, 'microsoft')
+    const user = authHelpers.cookie(req.user, 'github')
 
     logger.debug(user)
 
