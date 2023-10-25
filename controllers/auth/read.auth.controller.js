@@ -41,6 +41,7 @@ router.get('/guest', async (req, res, next) => {
 router.get('/github', passport.authenticate('github', { scope: ['read:user'] }))
 
 router.get('/githubcallback', async (req, res, next) => {
+  logger.debug('inside callback')
   try {
     // if (res.locals.provider.spec.strategy === 'guest') {
     const user = {
@@ -53,9 +54,9 @@ router.get('/githubcallback', async (req, res, next) => {
 
     logger.debug(user)
 
-    res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
-    res.redirect(global.redirect)
-    res.status(200)
+    // res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
+    // res.redirect(global.redirect)
+    // res.status(200)
   } catch (err) {
     next(err)
   }
