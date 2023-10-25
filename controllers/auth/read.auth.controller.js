@@ -9,10 +9,6 @@ const {
 const logger = require('../../service-library/helpers/logger.helpers')
 const jwtHelpers = require('../../service-library/helpers/jwt.helpers')
 const authHelpers = require('../../helpers/auth.helpers')
-// const k8sHelpers = require('../../service-library/helpers/k8s.helpers')
-// const stringHelpers = require('../../service-library/helpers/string.helpers')
-// const responseHelpers = require('../../helpers/response.helpers')
-// const { k8sConstants } = require('../../service-library/constants')
 
 router.get('/guest', async (req, res, next) => {
   try {
@@ -43,28 +39,6 @@ router.get(
   passport.authenticate('github', { scope: ['read:user', 'read:org'] })
 )
 
-// router.get('/github/callback', async (req, res, next) => {
-//   logger.debug('inside callback')
-//   try {
-//     // if (res.locals.provider.spec.strategy === 'guest') {
-//     const user = {
-//       id: 'guestgithub',
-//       username: 'guestgithub',
-//       provider: 'guestgithub',
-//       email: 'guestgithub@krateo.io',
-//       displayName: 'guestgithub'
-//     }
-
-//     logger.debug(user)
-
-//     res.cookie(envConstants.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
-//     res.redirect(global.redirect)
-//     res.status(200)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
 router.get(
   '/github/callback',
   passport.authenticate('github', {
@@ -72,14 +46,10 @@ router.get(
     failureMessage: true
   }),
   async function (req, res, next) {
-    console.debug(req)
-    console.debug(JSON.stringify.req)
-    console.debug(res)
-    console.debug(JSON.stringify.res)
-
+    console.debug('User info from GitHub: ' + JSON.stringify(req.user))
     const user = authHelpers.cookie(req.user, 'github')
 
-    logger.debug(user)
+    logger.debug('User info ready for cookie:' + user)
     res.cookie(process.env.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
 
     res.redirect(global.redirect)
