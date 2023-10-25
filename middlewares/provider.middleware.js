@@ -7,7 +7,13 @@ const logger = require('../service-library/helpers/logger.helpers')
 const stringHelpers = require('../service-library/helpers/string.helpers')
 const k8sHelpers = require('../service-library/helpers/k8s.helpers')
 const responseHelpers = require('../helpers/response.helpers')
-const { k8sConstants } = require('../service-library/constants')
+const {
+  k8sConstants,
+  envConstants,
+  cookieConstants
+} = require('../service-library/constants')
+const authHelpers = require('../helpers/auth.helpers')
+const jwtHelpers = require('../service-library/helpers/jwt.helpers')
 
 module.exports = async (req, res, next) => {
   const { name, redirect } = req.query
@@ -77,6 +83,28 @@ module.exports = async (req, res, next) => {
                   logger.debug('native callback')
                   logger.debug(accessToken)
                   logger.debug(profile)
+
+                  const userInfo = {}
+                  userInfo.id = profile.id
+                  userInfo.displayName = profile.name
+                  userInfo.username = profile.username
+                  try {
+                    userInfo.email = profile.emails[0].value
+                  } catch {}
+
+                  logger.info('8')
+                  logger.info(JSON.stringify(userInfo))
+                  const user = authHelpers.cookie(userInfo, 'github')
+
+                  logger.info('9')
+                  logger.info(user)
+
+                  res.cookie(
+                    envConstants.COOKIE_NAME,
+                    jwtHelpers.sign(user),
+                    cookieConstants
+                  )
+
                   return done(null, profile)
                 })
               }
