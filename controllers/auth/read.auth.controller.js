@@ -80,7 +80,6 @@ router.get(
     const user = authHelpers.cookie(req.user, 'github')
 
     logger.debug(user)
-
     res.cookie(process.env.COOKIE_NAME, jwtHelpers.sign(user), cookieConstants)
 
     res.redirect(global.redirect)
