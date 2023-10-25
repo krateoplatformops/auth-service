@@ -106,6 +106,10 @@ router.get(
     logger.debug(config)
     logger.debug(req)
     const grantCode = req.query.code
+    logger.debug('query')
+    logger.debug(req.query)
+    logger.debug('grantcode')
+    logger.debug(req.query.code)
 
     const tokenURL = config.tokenURL
     const userProfileURL = config.userProfileURL
